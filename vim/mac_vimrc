@@ -1,0 +1,125 @@
+" Note: run the following on Mac's terminal to add spacing around
+" Vim's window:
+" defaults write org.vim.MacVim MMTextInsetTop '10'
+" defaults write org.vim.MacVim MMTextInsetLeft '10'
+" defaults write org.vim.MacVim MMTextInsetBottom '10'
+" defaults write org.vim.MacVim MMTextInsetRight '10'
+
+" Use spaces for tabs
+set expandtab
+
+" Number of spaces used in indentation (i.e., when Vim
+" auto indent the code, this is the number of spaces it will add,
+" which means this value is not the same as ts)
+set shiftwidth=2
+
+" Keeps indentation from previous line
+set autoindent
+
+" Adds indentation level in some cases, according to C indenting rules
+set cindent
+
+" tabstop: number of spaces to be used in a <Tab>
+set ts=2
+
+" softtabstop: number of spaces a <Tab> counts for when editing
+" useful for deleting all spaces from a soft <tab>, instead of going 1 by 1
+set sts=2
+
+" Avoid going to column 0 when typing #
+" Reference: http://vim.wikia.com/wiki/Restoring_indent_after_typing_hash
+set nosmartindent
+set cinkeys-=0#
+set indentkeys-=0#
+
+" Line numbers
+set nu
+
+" Automatically adds the comment char when creating multi-line comments
+set formatoptions+=or
+
+" highlight search results
+set hls!
+
+" Set some options for selection, mouse, etc.
+behave mswin
+
+if has("gui_macvim")
+  let macvim_hig_shift_movement = 1
+  " disable tooltips with documentation (ruby and maybe others)
+
+  " filetype plugin on
+  " set omnifunc=syntaxcomplete#Complete
+
+  " set noballooneval
+  " let g:EclimShowCurrentErrorBalloon = 0
+
+  " vim-less
+  " call pathogen#infect()
+endif
+
+" Change working dir to the dir containing current file
+" Commented so I can use Command-T without changing dir
+"if exists("+autochdir")
+"    set autochdir
+"endif
+
+colorscheme Tomorrow-Night-Eighties
+set guifont=Monaco:h14
+
+noremap <Help> <Insert>
+
+" makes left and right arrows navigate between lines
+set whichwrap+=<,>,[,]
+
+" display line and column numbers
+set ruler
+
+" Set window size
+"if has("gui_running")
+  " GUI is running or is about to start.
+  " Maximize gvim window.
+"  set lines=999 columns=999
+"endif
+
+" required by eclim (eclipse+vim integration)
+"filetype plugin indent on
+
+" Custom indentation
+autocmd FileType php setlocal shiftwidth=4 ts=4 sts=4
+autocmd FileType java setlocal shiftwidth=4 ts=4 sts=4
+
+" For Ruby, disable the sharp character going to the start of line when commenting
+" http://stackoverflow.com/questions/2063175/vim-insert-mode-comments-go-to-start-of-line
+autocmd BufRead *.rb inoremap # X<c-h>#
+
+" Vundle
+" Bundle 'git://github.com:yuratomo/php-api-complete.git'
+
+"au BufNewFile,BufRead *.php   setl omnifunc=phpapi#complete
+
+set wildignore+=**/node_modules/**
+let g:CommandTWildIgnore=&wildignore
+
+" Command-T mapping to open fines in new tab
+let g:CommandTAcceptSelectionTabMap='<CR>'
+
+" Handlebars syntax
+au BufRead,BufNewFile *.handlebars,*.hbs set ft=html syntax=handlebars
+
+" Drupal syntax highlight
+if has("autocmd")
+  " Drupal *.module and *.install files.
+  augroup module
+    autocmd BufRead,BufNewFile *.module set filetype=php
+    autocmd BufRead,BufNewFile *.install set filetype=php
+    autocmd BufRead,BufNewFile *.test set filetype=php
+    autocmd BufRead,BufNewFile *.inc set filetype=php
+    autocmd BufRead,BufNewFile *.profile set filetype=php
+    autocmd BufRead,BufNewFile *.view set filetype=php
+  augroup END
+endif
+syntax on
+
+" make the line numbers darker
+highlight LineNr guifg=grey37
